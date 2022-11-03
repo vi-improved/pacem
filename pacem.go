@@ -22,7 +22,16 @@ type Score struct {
 	Bass     string
 }
 
-var templates = template.Must(template.ParseFiles("template.ly"))
+var templates = template.Must(
+	template.ParseFiles(
+		"scoreTemplate.ly",
+		"kerileeTemplate.ly",
+		"carolineTemplate.ly",
+		"hornTemplate.ly",
+		"saxTemplate.ly",
+		"bassTemplate.ly",
+	),
+)
 
 func partReader(title string, part string) string {
 	entries := 0
@@ -46,7 +55,7 @@ func partConcatenator(part string) string {
 	return concatenatedPart.String()
 }
 
-func scoreGenerator() error {
+func scoreGenerator() {
 	p := Score{
 		KeriLee:  partConcatenator("KeriLee"),
 		Caroline: partConcatenator("Caroline"),
@@ -54,26 +63,35 @@ func scoreGenerator() error {
 		Sax:      partConcatenator("Sax"),
 		Bass:     partConcatenator("Bass"),
 	}
-	var filledTemplate bytes.Buffer
-	templates.ExecuteTemplate(&filledTemplate, "template.ly", p)
-	out := filledTemplate.Bytes()
-	os.WriteFile("out.ly", out, 0600)
-	lilypond := exec.Command("lilypond", "out.ly")
-	return lilypond.Run()
+	parts := [6]string{"score", "kerilee", "caroline", "horn", "sax", "bass"}
+	for _, part := range parts {
+		var filledPartTemplate bytes.Buffer
+		templates.ExecuteTemplate(&filledPartTemplate, part+"Template.ly", p)
+		partOut := filledPartTemplate.Bytes()
+		os.WriteFile(part+".ly", partOut, 0600)
+		partLilypond := exec.Command("lilypond", part+".ly")
+		partLilypond.Run()
+	}
 }
 
-func rootHandler(w http.ResponseWriter, r *http.Request) {
+func partHandler(w http.ResponseWriter, r *http.Request) {
+	part := r.URL.Path[1:]
 	w.Header().Add("Content-Type", "application/pdf")
-	err := scoreGenerator()
+	out, err := os.ReadFile(part + ".pdf")
 	if err != nil {
 		return
 	}
-	out, _ := os.ReadFile("out.pdf")
 	io.WriteString(w, string(out))
+}
+
+func randomizeHandler(w http.ResponseWriter, r *http.Request) {
+	scoreGenerator()
+	io.WriteString(w, "randomized")
 }
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
-	http.HandleFunc("/", rootHandler)
+	http.HandleFunc("/", partHandler)
+	http.HandleFunc("/randomize", randomizeHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
