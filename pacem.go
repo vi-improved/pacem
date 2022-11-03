@@ -9,9 +9,9 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 	"text/template"
-	"time"
 )
 
 type Score struct {
@@ -79,19 +79,34 @@ func partHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/pdf")
 	out, err := os.ReadFile(part + ".pdf")
 	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	io.WriteString(w, string(out))
 }
 
-func randomizeHandler(w http.ResponseWriter, r *http.Request) {
+func inputHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "<h1>Submit Number</h1>"+
+	"<form action=\"/submit/\" method=\"POST\">"+
+	"<textarea name=\"body\"></textarea><br>"+
+	"<input type=\"submit\" value=\"Save\">"+
+	"</form>")
+}
+
+func submitHandler(w http.ResponseWriter, r *http.Request) {
+	choice, err := strconv.Atoi(r.FormValue("body"))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	rand.Seed(int64(choice))
 	scoreGenerator()
-	io.WriteString(w, "randomized")
+	io.WriteString(w, "number submitted and score randomized")
 }
 
 func main() {
-	rand.Seed(time.Now().UnixNano())
 	http.HandleFunc("/", partHandler)
-	http.HandleFunc("/randomize", randomizeHandler)
+	http.HandleFunc("/submit/", submitHandler)
+	http.HandleFunc("/input/", inputHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
