@@ -129,7 +129,11 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 func waitHandler(w http.ResponseWriter, r *http.Request) {
 	performer := r.URL.Path[len("/wait/"):]
 	if !generated {
-		fmt.Fprintf(w, "<head><meta http-equiv=\"refresh\" content=\"5\" /></head><body>Number submitted, waiting for other performers</body>")
+		if len(inputs) < 5 {
+			fmt.Fprintf(w, "<head><meta http-equiv=\"refresh\" content=\"1\" /></head><body>Number submitted, waiting for other performers (%s/5)</body>", fmt.Sprint(len(inputs)))
+		} else {
+			fmt.Fprint(w, "<head><meta http-equiv=\"refresh\" content=\"1\" /></head><body>Number submitted, waiting for score generation</body>")
+		}
 	} else {
 		http.Redirect(w, r, "/" + performer, http.StatusFound)
 	}
