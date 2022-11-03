@@ -1,5 +1,3 @@
-\new Staff \with {
-	instrumentName = "Horn in F"
-} {
+hornNotes = \transpose f c' {
 	{{.Horn}}
 }

@@ -1,5 +1,3 @@
-\new Staff \with {
-	instrumentName = "Alto Saxophone"
-} {
+saxNotes = \transpose ees c' {
 	{{.Sax}}
 }

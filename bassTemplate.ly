@@ -1,6 +1,4 @@
-\new Staff \with {
-	instrumentName = "Double Bass"
-} {
+bassNotes = {
 	\clef bass
 	{{.Bass}}
 }

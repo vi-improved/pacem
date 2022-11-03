@@ -29,7 +29,6 @@ var generated bool = false
 
 var templates = template.Must(
 	template.ParseFiles(
-		"scoreTemplate.ly",
 		"kerileeTemplate.ly",
 		"carolineTemplate.ly",
 		"hornTemplate.ly",
@@ -69,15 +68,17 @@ func scoreGenerator() {
 		Sax: partConcatenator("Sax"),
 		Bass: partConcatenator("Bass"),
 	}
-	parts := [6]string{"score", "kerilee", "caroline", "horn", "sax", "bass"}
+	parts := [5]string{"kerilee", "caroline", "horn", "sax", "bass"}
 	for _, part := range parts {
 		var filledPartTemplate bytes.Buffer
 		templates.ExecuteTemplate(&filledPartTemplate, part+"Template.ly", p)
 		partOut := filledPartTemplate.Bytes()
 		os.WriteFile(part+".ly", partOut, 0600)
-		partLilypond := exec.Command("lilypond", part+".ly")
+		partLilypond := exec.Command("lilypond", part+"Part.ly")
 		partLilypond.Run()
 	}
+	scoreLilypond := exec.Command("lilypond", "score.ly")
+	scoreLilypond.Run()
 }
 
 func partHandler(w http.ResponseWriter, r *http.Request) {
@@ -87,7 +88,12 @@ func partHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Add("Content-Type", "application/pdf")
-	out, err := os.ReadFile(part + ".pdf")
+	if part == "score" {
+		out, _ := os.ReadFile("score.pdf")
+		io.WriteString(w, string(out))
+		return
+	}
+	out, err := os.ReadFile(part + "Part.pdf")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

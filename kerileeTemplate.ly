@@ -1,5 +1,3 @@
-\new Staff \with {
-	instrumentName = "Soprano I"
-} {
+kerileeNotes = {
 	{{.KeriLee}}
 }
