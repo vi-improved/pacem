@@ -25,7 +25,7 @@ type Score struct {
 }
 
 var inputs = make(map[string]int)
-var generateCompleted = make(chan any)
+var generated bool = false
 
 var templates = template.Must(
 	template.ParseFiles(
@@ -82,6 +82,10 @@ func scoreGenerator() {
 
 func partHandler(w http.ResponseWriter, r *http.Request) {
 	part := r.URL.Path[1:]
+	if part == "" {
+		http.Redirect(w, r, "/input/", http.StatusFound)
+		return
+	}
 	w.Header().Add("Content-Type", "application/pdf")
 	out, err := os.ReadFile(part + ".pdf")
 	if err != nil {
@@ -117,22 +121,18 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	inputs[performer] = choice
-	go waitForGenerate(w, r, performer)
+	generated = false
 	fmt.Print(inputs)
 	http.Redirect(w, r, "/wait/" + strings.ToLower(strings.ReplaceAll(performer, " ", "")), http.StatusFound)
 }
 
 func waitHandler(w http.ResponseWriter, r *http.Request) {
 	performer := r.URL.Path[len("/wait/"):]
-	if len(inputs) < 5 {
+	if !generated {
 		fmt.Fprintf(w, "<head><meta http-equiv=\"refresh\" content=\"5\" /></head><body>Number submitted, waiting for other performers</body>")
-		return
+	} else {
+		http.Redirect(w, r, "/" + performer, http.StatusFound)
 	}
-	http.Redirect(w, r, "/" + performer, http.StatusFound)
-}
-
-func waitForGenerate(w http.ResponseWriter, r *http.Request, performer string) {
-	generateCompleted <- struct{}{}
 }
 
 func waitToGenerate() {
@@ -148,7 +148,7 @@ func waitToGenerate() {
 		rand.Seed(seed)
 		scoreGenerator()
 		inputs = make(map[string]int)
-		<- generateCompleted
+		generated = true
 	}
 }
 
