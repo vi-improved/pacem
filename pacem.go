@@ -17,15 +17,17 @@ import (
 )
 
 type Score struct {
-	KeriLee string
+	KeriLee  string
 	Caroline string
-	Horn string
-	Sax string
-	Bass string
+	Horn     string
+	Sax      string
+	Bass     string
 }
 
-var inputs = make(map[string]int)
-var generated bool = false
+var (
+	inputs         = make(map[string]int)
+	generated bool = false
+)
 
 var templates = template.Must(
 	template.ParseFiles(
@@ -61,12 +63,12 @@ func partConcatenator(part string) string {
 }
 
 func scoreGenerator() {
-	p := Score {
-		KeriLee: partConcatenator("KeriLee"),
+	p := Score{
+		KeriLee:  partConcatenator("KeriLee"),
 		Caroline: partConcatenator("Caroline"),
-		Horn: partConcatenator("Horn"),
-		Sax: partConcatenator("Sax"),
-		Bass: partConcatenator("Bass"),
+		Horn:     partConcatenator("Horn"),
+		Sax:      partConcatenator("Sax"),
+		Bass:     partConcatenator("Bass"),
 	}
 	parts := [5]string{"kerilee", "caroline", "horn", "sax", "bass"}
 	for _, part := range parts {
@@ -102,21 +104,8 @@ func partHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func inputHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "<h1>Submit Number</h1>"+
-	"<form action=\"/submit/\" method=\"POST\">"+
-	"<textarea name=\"body\"></textarea><br>"+
-	"<input type=\"radio\" id=\"kerilee\" name=\"performer\" value=\"Keri Lee\">"+
-	"<label for=\"kerilee\">Keri Lee</label><br>"+
-	"<input type=\"radio\" id=\"caroline\" name=\"performer\" value=\"Carolyn\">"+
-	"<label for=\"caroline\">Caroline</label><br>"+
-	"<input type=\"radio\" id=\"horn\" name=\"performer\" value=\"Horn\">"+
-	"<label for=\"horn\">Horn</label><br>"+
-	"<input type=\"radio\" id=\"sax\" name=\"performer\" value=\"Sax\">"+
-	"<label for=\"sax\">Sax</label><br>"+
-	"<input type=\"radio\" id=\"bass\" name=\"performer\" value=\"Bass\">"+
-	"<label for=\"bass\">Bass</label><br>"+
-	"<input type=\"submit\" value=\"Save\">"+
-	"</form>")
+	page, _ := os.ReadFile("input.html")
+	fmt.Fprintf(w, string(page))
 }
 
 func submitHandler(w http.ResponseWriter, r *http.Request) {
@@ -129,19 +118,23 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 	inputs[performer] = choice
 	generated = false
 	fmt.Print(inputs)
-	http.Redirect(w, r, "/wait/" + strings.ToLower(strings.ReplaceAll(performer, " ", "")), http.StatusFound)
+	http.Redirect(w, r, "/wait/"+strings.ToLower(strings.ReplaceAll(performer, " ", "")), http.StatusFound)
 }
 
 func waitHandler(w http.ResponseWriter, r *http.Request) {
 	performer := r.URL.Path[len("/wait/"):]
 	if !generated {
 		if len(inputs) < 5 {
-			fmt.Fprintf(w, "<head><meta http-equiv=\"refresh\" content=\"1\" /></head><body>Number submitted, waiting for other performers (%s/5)</body>", fmt.Sprint(len(inputs)))
+			fmt.Fprintf(
+				w,
+				"<head><meta http-equiv=\"refresh\" content=\"1\" /></head><body>Number submitted, waiting for other performers (%s/5)</body>",
+				fmt.Sprint(len(inputs)),
+			)
 		} else {
 			fmt.Fprint(w, "<head><meta http-equiv=\"refresh\" content=\"1\" /></head><body>Number submitted, waiting for score generation</body>")
 		}
 	} else {
-		http.Redirect(w, r, "/" + performer, http.StatusFound)
+		http.Redirect(w, r, "/"+performer, http.StatusFound)
 	}
 }
 

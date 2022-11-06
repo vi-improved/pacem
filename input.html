@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Number Input</title>
+	</head>
+	<body>
+		<h1>Submit Number</h1>
+		<form action="/submit/" method="POST">
+			<textarea name="body"></textarea><br>
+			<input type="radio" id="kerilee" name="performer" value="Keri Lee">
+			<label for="kerilee">Keri Lee</label><br>
+			<input type="radio" id="caroline" name="performer" value="Carolyn">
+			<label for="caroline">Caroline</label><br>
+			<input type="radio" id="horn" name="performer" value="Horn">
+			<label for="horn">Horn</label><br>
+			<input type="radio" id="sax" name="performer" value="Sax">
+			<label for="sax">Sax</label><br>
+			<input type="radio" id="bass" name="performer" value="Bass">
+			<label for="bass">Bass</label><br>
+			<input type="submit" value="Save">
+		</form>
+		<h2>Instructions</h2>
+		<p>This page is the start of the randomizer for the piece you will be playing. On this page, input any number you feel like, then select the correct option for your instrument/name. Try not to use the same number multiple times. After submitting your number, you will be put on a page that will automatically reload every second. There, the page will have the total amount of players who have submitted their number. After all 5 players have submitted a number, the page will display "Number submitted, waiting for score generation" for a couple seconds, then display the score in a form of the PDF in your browser. Currently, the music here is very short and very basic since I've mainly been working on the programming behind this, as currently this is essentially just a Tech Demo. If you find any issues, feel free to either email me (violet.purcell@interlochen.org) or file an issue at <a href=https://codeberg.org/vimproved/pacem/issues>the issues page of the git repo.</a></p>
+	</body>
+</html>
