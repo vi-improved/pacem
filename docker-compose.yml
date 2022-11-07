@@ -1,8 +1,11 @@
 version: "3.9"
 services:
-        pacem:
-                build:
-                        dockerfile: Dockerfile
-                        context: .
-                ports:
-                        - "8080:8080"
+  pacem:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    networks:
+      - "caddy_default"
+networks:
+  caddy_default:
+    external: true
