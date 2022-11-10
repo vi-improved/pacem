@@ -33,9 +33,9 @@ var templates = template.Must(
 	template.ParseFiles(
 		"kerileeTemplate.ly",
 		"carolineTemplate.ly",
-		"hornTemplate.ly",
-		"saxTemplate.ly",
-		"bassTemplate.ly",
+		"rachelTemplate.ly",
+		"garrettTemplate.ly",
+		"anthonyTemplate.ly",
 	),
 )
 
@@ -70,7 +70,7 @@ func scoreGenerator() {
 		Sax:      partConcatenator("Sax"),
 		Bass:     partConcatenator("Bass"),
 	}
-	parts := [5]string{"kerilee", "caroline", "horn", "sax", "bass"}
+	parts := [5]string{"kerilee", "caroline", "rachel", "garrett", "anthony"}
 	for _, part := range parts {
 		var filledPartTemplate bytes.Buffer
 		templates.ExecuteTemplate(&filledPartTemplate, part+"Template.ly", p)
