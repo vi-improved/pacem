@@ -18,7 +18,7 @@ import (
 
 type Score struct {
 	KeriLee  string
-	carolyn string
+	Carolyn string
 	Rachel   string
 	Garrett  string
 	Anthony  string
