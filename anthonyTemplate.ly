@@ -1,4 +1,4 @@
 anthonyNotes = {
-	\clef anthony
+	\clef bass
 	{{.Anthony}}
 }
