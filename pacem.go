@@ -18,10 +18,10 @@ import (
 
 type Score struct {
 	KeriLee  string
-	Caroline string
-	Horn     string
-	Sax      string
-	Bass     string
+	carolyn string
+	Rachel   string
+	Garrett  string
+	Anthony  string
 }
 
 var (
@@ -32,7 +32,7 @@ var (
 var templates = template.Must(
 	template.ParseFiles(
 		"kerileeTemplate.ly",
-		"carolineTemplate.ly",
+		"carolynTemplate.ly",
 		"rachelTemplate.ly",
 		"garrettTemplate.ly",
 		"anthonyTemplate.ly",
@@ -65,12 +65,12 @@ func partConcatenator(part string) string {
 func scoreGenerator() {
 	p := Score{
 		KeriLee:  partConcatenator("KeriLee"),
-		Caroline: partConcatenator("Caroline"),
-		Horn:     partConcatenator("Horn"),
-		Sax:      partConcatenator("Sax"),
-		Bass:     partConcatenator("Bass"),
+		carolyn:  partConcatenator("Carolyn"),
+		Horn:     partConcatenator("Rachel"),
+		Sax:      partConcatenator("Garrett"),
+		Bass:     partConcatenator("Anthony"),
 	}
-	parts := [5]string{"kerilee", "caroline", "rachel", "garrett", "anthony"}
+	parts := [5]string{"kerilee", "carolyn", "rachel", "garrett", "anthony"}
 	for _, part := range parts {
 		var filledPartTemplate bytes.Buffer
 		templates.ExecuteTemplate(&filledPartTemplate, part+"Template.ly", p)
