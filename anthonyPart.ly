@@ -1,2 +1,2 @@
-\include "bass.ly"
-\new Staff \bassNotes
+\include "anthony.ly"
+\new Staff \anthonyNotes

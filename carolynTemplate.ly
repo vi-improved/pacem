@@ -1,3 +1,3 @@
-carolineNotes = {
-	{{.Caroline}}
+carolynNotes = {
+	{{.Carolyn}}
 }

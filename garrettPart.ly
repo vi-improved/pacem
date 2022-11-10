@@ -1,2 +1,2 @@
-\include "sax.ly"
-\new Staff \saxNotes
+\include "garrett.ly"
+\new Staff \garrettNotes

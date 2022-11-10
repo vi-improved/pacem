@@ -1,3 +1,3 @@
-saxNotes = \transpose ees c' {
-	{{.Sax}}
+garrettNotes = \transpose ees c' {
+	{{.Garrett}}
 }

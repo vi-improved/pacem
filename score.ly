@@ -1,16 +1,16 @@
 \include "kerilee.ly"
-\include "caroline.ly"
-\include "sax.ly"
-\include "horn.ly"
-\include "bass.ly"
+\include "carolyn.ly"
+\include "garrett.ly"
+\include "rachel.ly"
+\include "anthony.ly"
 <<
 \new Staff \kerileeNotes
 
-\new Staff \carolineNotes
+\new Staff \carolynNotes
 
-\new Staff \saxNotes
+\new Staff \garrettNotes
 
-\new Staff \hornNotes
+\new Staff \rachelNotes
 
-\new Staff \bassNotes
+\new Staff \anthonyNotes
 >>

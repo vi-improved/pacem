@@ -1,3 +1,3 @@
-hornNotes = \transpose f c' {
-	{{.Horn}}
+rachelNotes = \transpose f c' {
+	{{.Rachel}}
 }

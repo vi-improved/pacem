@@ -65,10 +65,10 @@ func partConcatenator(part string) string {
 func scoreGenerator() {
 	p := Score{
 		KeriLee:  partConcatenator("KeriLee"),
-		carolyn:  partConcatenator("Carolyn"),
-		Horn:     partConcatenator("Rachel"),
-		Sax:      partConcatenator("Garrett"),
-		Bass:     partConcatenator("Anthony"),
+		Carolyn:  partConcatenator("Carolyn"),
+		Rachel:     partConcatenator("Rachel"),
+		Garrett:      partConcatenator("Garrett"),
+		Anthony:     partConcatenator("Anthony"),
 	}
 	parts := [5]string{"kerilee", "carolyn", "rachel", "garrett", "anthony"}
 	for _, part := range parts {
