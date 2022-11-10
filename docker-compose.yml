@@ -4,8 +4,5 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
-    networks:
-      - "caddy_default"
-networks:
-  caddy_default:
-    external: true
+    ports:
+      - 8080:8080

@@ -1,4 +1,4 @@
-FROM golang:1.19-alpine
+FROM golang:1.19
 
 WORKDIR /usr/src/app
 
@@ -8,5 +8,7 @@ RUN go mod download && go mod verify
 
 COPY . .
 RUN go build -v -o /usr/local/bin/app ./...
+RUN apt-get update
+RUN apt-get install --yes lilypond
 
 CMD ["app"]
