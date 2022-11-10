@@ -1,2 +1,2 @@
 \include "anthony.ly"
-\new Staff \anthonyNotes
+\new Staff \with { instrumentName = "Cello" } \anthonyNotes

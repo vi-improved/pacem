@@ -1,2 +1,2 @@
 \include "rachel.ly"
-\new Staff \rachelNotes
+\new Staff \with { instrumentName = "Horn in F" } \rachelNotes

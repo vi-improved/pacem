@@ -1,2 +1,2 @@
 \include "garrett.ly"
-\new Staff \garrettNotes
+\new Staff \with { instrumentName = "Alto Sax" } \garrettNotes
